@@ -9,7 +9,7 @@ const StatPage = ({ stats, rowsPerPage, page }) => {
 
   return statPage.map(stat => {
     return (
-      <TableRow>
+      <TableRow key={stat["Player"]}>
         <TableCell>{stat["Player"]}</TableCell>
         <TableCell align="right">{stat["Team"]}</TableCell>
         <TableCell align="right">{stat["Pos"]}</TableCell>
