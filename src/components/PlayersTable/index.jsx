@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { orderBy } from 'lodash'
+import { CSVLink } from 'react-csv'
+
+import Fab from '@material-ui/core/Fab';
+import GetAppIcon from '@material-ui/icons/GetApp';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -13,52 +17,18 @@ import StatPage from '../StatPage';
 
 const PlayersTable = () => {
   const [stats, setStats] = useState([])
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  let sortedStats
+  const [order, setOrder] = React.useState('asc');
+  const [sortBy, setSortBy] = React.useState('');
+
   const sortData = (category) => {
-    switch (category) {
-      case 'Team':
-        setStats(orderBy(playerData, 'Team', ['asc']))
-        break;
-      case 'Pos':
-        setStats(orderBy(playerData, 'Pos', ['asc']))
-        break;
-      case 'Att':
-        setStats(orderBy(playerData, 'Att', ['asc']))
-        break;
-      case 'Att/G':
-        setStats(orderBy(playerData, 'Att/G', ['asc']))
-        break;
-      case 'Yds':
-        setStats(orderBy(playerData, 'Yds', ['asc']))
-        break;
-      case 'TD':
-        setStats(orderBy(playerData, 'TD', ['asc']))
-        break;
-      case 'Lng':
-        setStats(orderBy(playerData, 'Lng', ['asc']))
-        break;
-      case '1st':
-        setStats(orderBy(playerData, '1st', ['asc']))
-        break;
-      case '1st%':
-        setStats(orderBy(playerData, '1st%', ['asc']))
-        break;
-      case '20+':
-        setStats(orderBy(playerData, '20+', ['asc']))
-        break;
-      case '40+':
-        setStats(orderBy(playerData, '40+', ['asc']))
-        break;
-      case 'FUM':
-        setStats(orderBy(playerData, 'FUM', ['asc']))
-        break;
-      default:
-        setStats(sortedStats)
-    }
-  }
+    const isDesc = sortBy === category && order === 'desc';
+    setOrder(isDesc ? 'asc' : 'desc');
+    setSortBy(category);
+    setStats(orderBy(playerData, category, [order]))
+  };
 
   useEffect(() => {
     setStats(playerData)
@@ -76,47 +46,55 @@ const PlayersTable = () => {
   };
 
   return (
-    <Table stickyHeader>
-      <TableHead>
-        <TableRow>
-          <TableCell>Player</TableCell>
-          <TableCell align="right" onClick={() => sortData('Team')}>Team</TableCell>
-          <TableCell align="right" onClick={() => sortData('Pos')}>Pos</TableCell>
-          <TableCell align="right" onClick={() => sortData('Att')}>Att</TableCell>
-          <TableCell align="right" onClick={() => sortData('Att/G')}>Att/G</TableCell>
-          <TableCell align="right" onClick={() => sortData('Yds')}>Yds</TableCell>
-          <TableCell align="right" onClick={() => sortData('TD')}>TD</TableCell>
-          <TableCell align="right" onClick={() => sortData('Lng')}>Lng</TableCell>
-          <TableCell align="right" onClick={() => sortData('1st')}>1st</TableCell>
-          <TableCell align="right" onClick={() => sortData('1st%')}>1st%</TableCell>
-          <TableCell align="right" onClick={() => sortData('20+')}>20+</TableCell>
-          <TableCell align="right" onClick={() => sortData('40+')}>40+</TableCell>
-          <TableCell align="right" onClick={() => sortData('FUM')}>FUM</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        <StatPage stats={stats} rowsPerPage={rowsPerPage} page={page} />
-        {emptyRows > 0 && (
-          <TableRow style={{ height: 53 * emptyRows }}>
-            <TableCell colSpan={6} />
+    <>
+      <Table stickyHeader>
+        <TableHead>
+          <TableRow>
+            <TableCell onClick={() => sortData('Player')}>Player</TableCell>
+            <TableCell align="right" onClick={() => sortData('Team')}>Team</TableCell>
+            <TableCell align="right" onClick={() => sortData('Pos')}>Pos</TableCell>
+            <TableCell align="right" onClick={() => sortData('Att')}>Att</TableCell>
+            <TableCell align="right" onClick={() => sortData('Att/G')}>Att/G</TableCell>
+            <TableCell align="right" onClick={() => sortData('Yds')}>Yds</TableCell>
+            <TableCell align="right" onClick={() => sortData('TD')}>TD</TableCell>
+            <TableCell align="right" onClick={() => sortData('Lng')}>Lng</TableCell>
+            <TableCell align="right" onClick={() => sortData('1st')}>1st</TableCell>
+            <TableCell align="right" onClick={() => sortData('1st%')}>1st%</TableCell>
+            <TableCell align="right" onClick={() => sortData('20+')}>20+</TableCell>
+            <TableCell align="right" onClick={() => sortData('40+')}>40+</TableCell>
+            <TableCell align="right" onClick={() => sortData('FUM')}>FUM</TableCell>
           </TableRow>
-        )}
-      <TableRow>
-        <TablePagination
-          rowsPerPageOptions={[10, 25, 50, { label: 'All', value: -1 }]}
-          count={playerData.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          SelectProps={{
-            inputProps: { 'aria-label': 'rows per page' },
-            native: true,
-          }}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
-      </TableRow>
-      </TableBody>
-    </Table>
+        </TableHead>
+        <TableBody>
+          <StatPage stats={stats} rowsPerPage={rowsPerPage} page={page} />
+          {emptyRows > 0 && (
+            <TableRow style={{ height: 53 * emptyRows }}>
+              <TableCell colSpan={6} />
+            </TableRow>
+          )}
+          <TableRow>
+            <TablePagination
+              rowsPerPageOptions={[10, 25, 50, { label: 'All', value: -1 }]}
+              count={playerData.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              SelectProps={{
+                inputProps: { 'aria-label': 'rows per page' },
+                native: true,
+              }}
+              onChangePage={handleChangePage}
+              onChangeRowsPerPage={handleChangeRowsPerPage}
+            />
+          </TableRow>
+        </TableBody>
+      </Table>
+      <CSVLink data={stats} filename={"rushing.csv"}>
+        <Fab variant="extended" aria-label="download">
+          <GetAppIcon />
+          Download CSV
+      </Fab>
+      </CSVLink>
+    </>
   );
 }
 
