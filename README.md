@@ -1,68 +1,56 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+# Solution to theScore "the Rush" Tech Challenge
 
-In the project directory, you can run:
+### Installation and running this solution
+1. Clone repo to your local machine
+2. Run `yarn` to install all the required dependencies
+3. Run `yarn start` to start the app
 
-### `yarn start`
+## Basic instructions for the App
+* When you get to the page, it will display ALL Players data from `rushing.json`
+* All the categories are sortable. Simply hover and click the category you want to sort.
+* To filter player's name, enter the name in the search bar above, and it will filter as you type.
+* Once you got the data you need, click on the `Download CSV` button to download.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Below here are the instructions that I was provided.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## theScore "the Rush" Interview Question
+At theScore, we are always looking for intelligent, resourceful, full-stack developers to join our growing team. To help us evaluate new talent, we have created this take-home interview question. This question should take you no more than a few hours.
 
-### `yarn test`
+### Understanding the problem
+In this repo is the file [`rushing.json`](/rushing.json). It contains data about NFL players' rushing statistics. Each entry contains the following information
+* `Player` (Player's name)
+* `Team` (Player's team abreviation)
+* `Pos` (Player's postion)
+* `Att/G` (Rushing Attempts Per Game Average)
+* `Att` (Rushing Attempts)
+* `Yrds` (Total Rushing Yards)
+* `Avg` (Rushing Average Yards Per Attempt)
+* `Yds/G` (Rushing Yards Per Game)
+* `TD` (Total Rushing Touchdowns)
+* `Lng` (Longest Rush -- a `T` represents a touchdown occurred)
+* `1st` (Rushing First Downs)
+* `1st%` (Rushing First Down Percentage)
+* `20+` (Rushing 20+ Yards Each)
+* `40+` (Rushing 40+ Yards Each)
+* `FUM` (Rushing Fumbles)
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+##### Requirements
+1. Create a web app. This must be able to do the following steps
+    1. Create a webpage which displays a table with the contents of `rushing.json`
+    2. The user should be able to sort the players by _Total Rushing Yards_, _Longest Rush_ and _Total Rushing Touchdowns_
+    3. The user should be able to filter by the player's name
+    4. The user should be able to download the sorted/filtered data as a CSV
 
-### `yarn build`
+2. Update the section `Installation and running this solution` in the README file explaining how to run your code
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Submitting a solution
+1. Download this repo
+2. Complete the problem outlined in the `Requirements` section
+3. In your personal public GitHub repo, create a new public repo with this implementation
+4. Provide this link to your contact at theScore
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+We will evaluate you on your ability to solve the problem defined in the requirements section as well as your choice of frameworks, and general coding style.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+### Help
+If you have any questions regarding requirements, do not hesitate to email your contact at theScore for clarification.
