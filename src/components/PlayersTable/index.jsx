@@ -3,6 +3,7 @@ import { orderBy } from 'lodash'
 import { CSVLink } from 'react-csv'
 
 import Fab from '@material-ui/core/Fab';
+import TextField from '@material-ui/core/TextField';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -19,20 +20,48 @@ const PlayersTable = () => {
   const [stats, setStats] = useState([])
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [order, setOrder] = useState('asc');
+  const [sortBy, setSortBy] = useState('');
 
-  const [order, setOrder] = React.useState('asc');
-  const [sortBy, setSortBy] = React.useState('');
+  const categories = [
+    "Player",
+    "Team",
+    "Pos",
+    "Att",
+    "Att/G",
+    "Yds",
+    "Avg",
+    "Yds/G",
+    "TD",
+    "Lng",
+    "1st",
+    "1st%",
+    "20+",
+    "40+",
+    "FUM"
+  ]
+
+  useEffect(() => {
+    setStats(playerData)
+  }, [])
+
+  const handleSearch = event => {
+    const searchParams = event.target.value.toLowerCase()
+
+    const results = playerData.filter(result => {
+      const playerName = result["Player"].toLowerCase()
+      return playerName.includes(searchParams)
+    })
+
+    setStats(results)
+  }
 
   const sortData = (category) => {
     const isDesc = sortBy === category && order === 'desc';
     setOrder(isDesc ? 'asc' : 'desc');
     setSortBy(category);
-    setStats(orderBy(playerData, category, [order]))
+    setStats(orderBy(stats, category, [order]))
   };
-
-  useEffect(() => {
-    setStats(playerData)
-  }, [])
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, playerData.length - page * rowsPerPage);
 
@@ -47,26 +76,25 @@ const PlayersTable = () => {
 
   return (
     <>
+      <TextField
+        id="standard-search"
+        label="Search player"
+        type="search"
+        margin="normal"
+        onChange={handleSearch}
+      />
       <Table stickyHeader>
         <TableHead>
           <TableRow>
-            <TableCell onClick={() => sortData('Player')}>Player</TableCell>
-            <TableCell align="right" onClick={() => sortData('Team')}>Team</TableCell>
-            <TableCell align="right" onClick={() => sortData('Pos')}>Pos</TableCell>
-            <TableCell align="right" onClick={() => sortData('Att')}>Att</TableCell>
-            <TableCell align="right" onClick={() => sortData('Att/G')}>Att/G</TableCell>
-            <TableCell align="right" onClick={() => sortData('Yds')}>Yds</TableCell>
-            <TableCell align="right" onClick={() => sortData('TD')}>TD</TableCell>
-            <TableCell align="right" onClick={() => sortData('Lng')}>Lng</TableCell>
-            <TableCell align="right" onClick={() => sortData('1st')}>1st</TableCell>
-            <TableCell align="right" onClick={() => sortData('1st%')}>1st%</TableCell>
-            <TableCell align="right" onClick={() => sortData('20+')}>20+</TableCell>
-            <TableCell align="right" onClick={() => sortData('40+')}>40+</TableCell>
-            <TableCell align="right" onClick={() => sortData('FUM')}>FUM</TableCell>
+            {categories.map(category => {
+              return (
+                <TableCell key={category} onClick={() => sortData(category)}>{category}</TableCell>
+              )
+            })}
           </TableRow>
         </TableHead>
         <TableBody>
-          <StatPage stats={stats} rowsPerPage={rowsPerPage} page={page} />
+          <StatPage stats={stats} rowsPerPage={rowsPerPage} page={page} categories={categories}/>
           {emptyRows > 0 && (
             <TableRow style={{ height: 53 * emptyRows }}>
               <TableCell colSpan={6} />
@@ -90,9 +118,8 @@ const PlayersTable = () => {
       </Table>
       <CSVLink data={stats} filename={"rushing.csv"}>
         <Fab variant="extended" aria-label="download">
-          <GetAppIcon />
-          Download CSV
-      </Fab>
+          <GetAppIcon /> Download CSV
+        </Fab>
       </CSVLink>
     </>
   );
