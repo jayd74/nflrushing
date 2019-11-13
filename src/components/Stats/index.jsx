@@ -2,7 +2,7 @@ import React from 'react'
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 
-const StatPage = ({ stats, rowsPerPage, page, categories }) => {
+const StatPage = ({ stats, rowsPerPage, page, categories, tableStyle }) => {
   const statPage = rowsPerPage > 0
     ? stats.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
     : stats
@@ -11,7 +11,7 @@ const StatPage = ({ stats, rowsPerPage, page, categories }) => {
     return (
       <TableRow key={stat["Player"]}>
         {categories.map(category => {
-          return <TableCell key={category}>{stat[category]}</TableCell>
+          return <TableCell className={tableStyle} key={category}>{stat[category]}</TableCell>
         })}
       </TableRow>
     )
