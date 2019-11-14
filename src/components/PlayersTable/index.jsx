@@ -9,13 +9,11 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
 
-import playerData from '../../assets/rushing.json'
-
 import Stats from './Stats';
 import TableHeader from './TableHeader'
 import SearchBar from '../SearchBar'
 import { useStyles } from '../../styles'
-
+import playerData from '../../assets/rushing.json'
 
 const PlayersTable = () => {
   const { button, buttonText, table, header } = useStyles()
@@ -23,15 +21,16 @@ const PlayersTable = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
+  // Grouping categories into a list, since they are the same for everyone.
   const categories = ["Player","Team","Pos","Att","Att/G","Yds","Avg","Yds/G","TD","Lng","1st","1st%","20+","40+","FUM"]
 
   useEffect(() => {
+    // Sets the stats to show all data on page load
     setStats(playerData)
   }, [])
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, playerData.length - page * rowsPerPage);
   const EmptyRow = () => {
-
     return (
       <TableRow style={{ height: 53 * emptyRows }}>
         <TableCell colSpan={6} />
@@ -50,19 +49,20 @@ const PlayersTable = () => {
 
   return (
     <>
-      <div className={header}>
+      <header className={header}>
         <h1>NFL Rushing</h1>
         <SearchBar setStats={setStats} data={playerData} />
         <CSVLink data={stats} filename={"rushing.csv"} className={buttonText}>
           <Button className={button}>Download CSV</Button>
         </CSVLink>
-      </div>
+      </header>
       <Table stickyHeader>
         <TableHead>
           <TableHeader setStats={setStats} stats={stats} categories={categories} />
         </TableHead>
         <TableBody>
           <Stats stats={stats} rowsPerPage={rowsPerPage} page={page} categories={categories} tableStyle={table}/>
+          {/* Adding empty rows to fill up the last page */}
           {emptyRows > 0 ? <EmptyRow /> : null}
           <TableRow>
             <TablePagination

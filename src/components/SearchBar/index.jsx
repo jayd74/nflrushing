@@ -4,8 +4,8 @@ import { withStyles } from '@material-ui/core/styles';
 
 const SearchBar = ({setStats, data}) => {
   const handleSearch = event => {
+    // Setting the inputs and results to lowerCase so that the search bar isn't case sensative.
     const searchParams = event.target.value.toLowerCase()
-
     const results = data.filter(result => {
       const playerName = result["Player"].toLowerCase()
       return playerName.includes(searchParams)
